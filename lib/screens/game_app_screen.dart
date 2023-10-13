@@ -21,6 +21,11 @@ class _GameAppScreenState extends State<GameAppScreen> {
                 children: [
                   Container(
                     height: 350,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/covers/${index + 1}.jpg"),
+                      ),
+                    ),
                   )
                 ],
               );
