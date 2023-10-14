@@ -2,6 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(const MaterialApp(
+    home: GameAppScreen(),
+  ));
+}
+
 class GameAppScreen extends StatefulWidget {
   const GameAppScreen({super.key});
 
@@ -66,6 +72,25 @@ class _GameAppScreenState extends State<GameAppScreen> {
     super.dispose();
   }
 
+  Widget buildRatingStars(double rating) {
+    List<Widget> stars = [];
+    for (int i = 1; i <= 5; i++) {
+      IconData iconData = i <= rating
+          ? Icons.star
+          : (i - 0.5 <= rating ? Icons.star_half : Icons.star_border);
+      stars.add(
+        Icon(
+          iconData,
+          color: Colors.yellow,
+        ),
+      );
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: stars,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,9 +123,10 @@ class _GameAppScreenState extends State<GameAppScreen> {
           PageView.builder(
             onPageChanged: _onPageChanged,
             controller: _pageController,
-            itemCount: 5,
+            itemCount: games.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
+              GameInfo game = games[index];
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -116,7 +142,7 @@ class _GameAppScreenState extends State<GameAppScreen> {
                         )
                       ],
                       image: DecorationImage(
-                        image: AssetImage("assets/covers/${index + 1}.jpg"),
+                        image: AssetImage(game.imagePath),
                       ),
                     ),
                   ),
@@ -124,21 +150,26 @@ class _GameAppScreenState extends State<GameAppScreen> {
                     height: 40,
                   ),
                   Text(
-                    games[index].title,
+                    game.title,
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   Text(
-                    games[index].description,
+                    game.description,
                     style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  buildRatingStars(game.rating), // Display rating stars
                 ],
               );
             },
