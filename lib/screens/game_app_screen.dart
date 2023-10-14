@@ -64,6 +64,14 @@ class _GameAppScreenState extends State<GameAppScreen> {
                   Container(
                     height: 350,
                     decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.4),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 8),
+                        )
+                      ],
                       image: DecorationImage(
                         image: AssetImage("assets/covers/${index + 1}.jpg"),
                       ),
