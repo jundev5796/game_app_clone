@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class GameAppScreen extends StatefulWidget {
@@ -12,12 +14,45 @@ class _GameAppScreenState extends State<GameAppScreen> {
     viewportFraction: 0.6,
   );
 
+  int _currentPage = 0;
+
+  void _onPageChanged(int newPage) {
+    setState(() {
+      _currentPage = newPage;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: Container(
+              key: ValueKey(_currentPage),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    "assets/covers/${_currentPage + 1}.jpg",
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 5,
+                  sigmaY: 5,
+                ),
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
           PageView.builder(
+            onPageChanged: _onPageChanged,
             controller: _pageController,
             itemCount: 5,
             scrollDirection: Axis.horizontal,
